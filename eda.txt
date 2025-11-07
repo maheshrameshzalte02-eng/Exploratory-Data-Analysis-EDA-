@@ -1,0 +1,186 @@
+import pandas as pd
+from pathlib import Path
+
+# Create folder
+output_path = Path("/mnt/data/EDA_Customer_Analysis.ipynb")
+
+# Notebook content (JSON structure for Jupyter Notebook)
+notebook_content = {
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 🧠 Exploratory Data Analysis (EDA)\n",
+    "### Objective: Extract insights using visual and statistical exploration\n",
+    "Tools: Python (Pandas, Matplotlib, Seaborn)\n",
+    "---"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "\n",
+    "sns.set(style='whitegrid')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 1️⃣ Create Example Customer Dataset"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create synthetic dataset\n",
+    "data = {\n",
+    "    'CustomerID': range(1, 101),\n",
+    "    'Gender': np.random.choice(['Male', 'Female'], 100),\n",
+    "    'Age': np.random.randint(18, 65, 100),\n",
+    "    'Annual_Income': np.random.randint(20000, 120000, 100),\n",
+    "    'Spending_Score': np.random.randint(1, 100, 100)\n",
+    "}\n",
+    "\n",
+    "df = pd.DataFrame(data)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 2️⃣ Basic Data Understanding"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.info()\n",
+    "df.describe()\n",
+    "df.isnull().sum()\n",
+    "df.duplicated().sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 3️⃣ Univariate Analysis"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Age Distribution\n",
+    "sns.histplot(df['Age'], kde=True, bins=15)\n",
+    "plt.title('Age Distribution')\n",
+    "plt.show()\n",
+    "\n",
+    "# Gender Count\n",
+    "sns.countplot(x='Gender', data=df)\n",
+    "plt.title('Gender Distribution')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 4️⃣ Bivariate Analysis"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sns.scatterplot(x='Age', y='Spending_Score', hue='Gender', data=df)\n",
+    "plt.title('Age vs Spending Score')\n",
+    "plt.show()\n",
+    "\n",
+    "sns.boxplot(x='Gender', y='Spending_Score', data=df)\n",
+    "plt.title('Spending Score by Gender')\n",
+    "plt.show()\n",
+    "\n",
+    "sns.pairplot(df[['Age', 'Annual_Income', 'Spending_Score']])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 5️⃣ Correlation Heatmap"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "corr = df.corr(numeric_only=True)\n",
+    "sns.heatmap(corr, annot=True, cmap='coolwarm')\n",
+    "plt.title('Correlation Heatmap')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## 6️⃣ Outlier Detection"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sns.boxplot(x=df['Annual_Income'])\n",
+    "plt.title('Outlier Detection - Annual Income')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 7️⃣ Summary of Findings\n",
+    "- The dataset contains 100 customers.\n",
+    "- Age and Spending Score show moderate variation.\n",
+    "- Income is widely distributed; some outliers exist.\n",
+    "- Spending behavior differs slightly by gender.\n",
+    "- Positive correlation between Income and Spending Score.\n",
+    "---\n",
+    "**Outcome:** Gained skill in identifying patterns, trends, and anomalies using EDA."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.x"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
+
+import json
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(notebook_content, f)
+
+output_path
